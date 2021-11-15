@@ -1,0 +1,15 @@
+const { CORS_NOT_ALLOWED, EMAIL_ALREADY_EXISTS, USERNAME_ALREADY_EXISTS, USER_NOT_FOUND } = require('./error-messages');
+const { BAD_REQUEST_STATUS, CONFLICT_STATUS, DEFAULT_ERR_STATUS, NOT_FOUND_STATUS } = require('./error-statuses');
+
+module.exports = {
+    ErrorHandler: require('./ErrorHandler'),
+    CORS_NOT_ALLOWED,
+    EMAIL_ALREADY_EXISTS,
+    USER_NOT_FOUND,
+    USERNAME_ALREADY_EXISTS,
+
+    BAD_REQUEST_STATUS,
+    NOT_FOUND_STATUS,
+    CONFLICT_STATUS,
+    DEFAULT_ERR_STATUS
+};
