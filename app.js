@@ -4,16 +4,16 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 
+require('dotenv').config();
+
 const { MONGO_CONNECT_URL, NODE_ENV, PORT, ALLOWED_ORIGIN } = require('./configs');
 const { DEFAULT_ERR_STATUS, ErrorHandler, CORS_NOT_ALLOWED } = require('./errors');
 const { userRouter } = require('./routers');
 
-require('dotenv').config();
-
 const app = express();
 
 mongoose.connect(MONGO_CONNECT_URL);
-console.log(MONGO_CONNECT_URL);
+
 app.use(helmet());
 app.use(cors({ origin: _configureCors }));
 app.use(rateLimit({
