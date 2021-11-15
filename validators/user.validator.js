@@ -32,9 +32,10 @@ const createUserValidator = joi.object({
         .string()
         .regex(PASSWORD_REGEXP)
         .required(),
-    type: joi
+    user_type: joi
         .string()
         .allow(...Object.values(userTypes))
+        .required(),
 });
 
 const updateUserValidator = joi.object({

@@ -31,7 +31,7 @@ const userSchema = new Schema({
         minLength: 8,
         select:false
     },
-    type: {
+    user_type: {
         type: String,
         required: true,
         enum: Object.values(userTypes)

@@ -1,22 +1,24 @@
 const { User } = require('../dataBase');
-const { ErrorHandler, NOT_FOUND_STATUS, BAD_REQUEST_STATUS, USER_NOT_FOUND } = require('../errors');
+const { ErrorHandler, NOT_FOUND_STATUS, BAD_REQUEST_STATUS, USER_NOT_FOUND, CONFLICT_STATUS,
+    USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS
+} = require('../errors');
 
 module.exports = {
     checkIfEmailUnique: async (req, res, next) => {
         try {
             const { user_name, email } = req.body;
 
-            const userUnique = await User.findOne({ or: [ email, user_name ] });
+            const userUnique = await User.findOne( { $or: [ { user_name }, { email } ] });
 
-            console.log(userUnique);
+            if (userUnique) {
+                if (userUnique.user_name === user_name) {
+                    throw new ErrorHandler(USERNAME_ALREADY_EXISTS, CONFLICT_STATUS);
+                }
 
-            // if (userUnique) {
-            //     throw new ErrorHandler(EMAIL_ALREADY_EXISTS, CONFLICT_STATUS);
-            // }
-            //
-            // if (userUniqueName) {
-            //     throw new ErrorHandler(USERNAME_ALREADY_EXISTS, CONFLICT_STATUS);
-            // }
+                if (userUnique.email === email) {
+                    throw new ErrorHandler(EMAIL_ALREADY_EXISTS, CONFLICT_STATUS);
+                }
+            }
 
             next();
         } catch (e) {
