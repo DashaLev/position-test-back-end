@@ -50,7 +50,9 @@ const updateUserValidator = joi.object({
         .alphanum()
         .min(2)
         .max(30)
-        .trim()
+        .trim(),
+    password: joi
+        .string()
 });
 
 module.exports = {

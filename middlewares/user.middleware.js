@@ -2,6 +2,7 @@ const { User } = require('../dataBase');
 const { ErrorHandler, NOT_FOUND_STATUS, BAD_REQUEST_STATUS, USER_NOT_FOUND, CONFLICT_STATUS,
     USERNAME_ALREADY_EXISTS, EMAIL_ALREADY_EXISTS
 } = require('../errors');
+const { passwordService } = require('../services');
 
 module.exports = {
     checkIfEmailUnique: async (req, res, next) => {
@@ -30,13 +31,26 @@ module.exports = {
         try {
             const { user_id } = req.params;
 
-            const user = await User.findById(user_id);
+            const user = await User.findById(user_id).select('+password');
 
             if (!user) {
                 throw new ErrorHandler(USER_NOT_FOUND, NOT_FOUND_STATUS);
             }
 
             req.user = user;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserPassword: async (req, res, next) => {
+        try {
+            const { password:hashPassword } = req.user;
+            const { password } = req.body;
+
+            await passwordService.compare(password, hashPassword);
 
             next();
         } catch (e) {

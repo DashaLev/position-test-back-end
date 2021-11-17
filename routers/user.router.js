@@ -19,10 +19,12 @@ userRouter.get('/:user_id',
 userRouter.put('/:user_id',
     userMiddleware.validationMiddleware(updateUserValidator),
     userMiddleware.checkUserExist,
+    userMiddleware.checkUserPassword,
     userController.updateUser);
 
 userRouter.delete('/:user_id',
     userMiddleware.checkUserExist,
+    userMiddleware.checkUserPassword,
     userController.deleteUser);
 
 module.exports = userRouter;
